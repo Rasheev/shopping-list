@@ -69,7 +69,7 @@ def register(request):
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('main:login')
-    context = {'form':form}
+    context = {'form': form}
     return render(request, 'register.html', context)
 
 
@@ -94,3 +94,21 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+
+def edit_product(request, id):
+    product = Product.objects.get(pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method=="POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+    
+    context = {'form': form}
+    return render(request, 'edit_product.html', context)
+    pass
+
+
+def delete_product(request, id):
+    product = Product.objects.get(pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
