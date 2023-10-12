@@ -117,7 +117,7 @@ def delete_product(request, id):
 
 def get_product_json(request):
     product_item = Product.objects.all()
-    return HttpResponseRedirect(serializers.serialize('json', product_item))
+    return HttpResponse(serializers.serialize('json', product_item))
 
 
 @csrf_exempt
